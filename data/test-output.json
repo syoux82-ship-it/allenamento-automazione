@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-11-27T14:12:43.718291Z",
+  "metrics": {
+    "date": "2026-11-23",
+    "ctl": 27.098446,
+    "atl": 27.095125,
+    "form": 0.0,
+    "eftp": 232.3471,
+    "resting_hr": 45,
+    "hrv": 56.0,
+    "hrv_avg_7d_precedenti": 55.1,
+    "sleep_hours": 6.6,
+    "stress_medio": 27
+  },
+  "attivita_oggi": [
+    {
+      "nome": "Ciclismo indoor",
+      "tipo": "indoor_cycling",
+      "durata_min": 48.5,
+      "distanza_km": 24.3,
+      "potenza_media": 149.0
+    }
+  ],
+  "judgment": "Nessun avviso: HRV in linea con la media recente, sonno sopra soglia (6.6h) e nessuna seduta di qualità rilevata oggi. Form a 0.0 indica equilibrio tra carico acuto e cronico, situazione stabile."
+}
