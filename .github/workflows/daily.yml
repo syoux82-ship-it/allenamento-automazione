@@ -6,7 +6,16 @@ on:
     # GitHub Actions usa sempre UTC: se vuoi un orario civile fisso in Italia, aggiorna
     # questa riga due volte l'anno (fine marzo e fine ottobre), oppure accetta lo scarto di un'ora.
     - cron: "0 5 * * *"
-  workflow_dispatch: {}  # permette di lanciarlo a mano da GitHub per testare
+  workflow_dispatch:
+    inputs:
+      data_test:
+        description: >-
+          Solo per un test manuale: data (YYYY-MM-DD) da elaborare invece di "ieri".
+          Lascia vuoto per il normale aggiornamento giornaliero. Con una data qui,
+          il risultato NON sovrascrive data/latest.json ne' lo storico: va invece
+          in data/test-output.json, cosi' un test non rovina i dati reali.
+        required: false
+        default: ""
 
 jobs:
   update:
@@ -33,6 +42,7 @@ jobs:
           INTERVALS_API_KEY: ${{ secrets.INTERVALS_API_KEY }}
           INTERVALS_ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TARGET_DATE: ${{ github.event.inputs.data_test }}
 
       - name: Commit del risultato aggiornato
         run: |
