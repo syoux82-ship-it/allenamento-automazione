@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T13:55:44.069538Z",
+  "generated_at": "2026-11-27T14:00:11.638381Z",
   "metrics": {
     "date": "2026-11-26",
     "ctl": 25.230354,
@@ -13,5 +13,5 @@
     "stress_medio": null
   },
   "attivita_oggi": [],
-  "judgment": "(giudizio non disponibile: 'ThinkingBlock' object has no attribute 'text')"
+  "judgment": "Nessuna attività registrata oggi. Dati mancanti: sonno, HRV odierna, resting HR e stress non disponibili, quindi non posso valutare l'avviso sonno (<6h) né quello HRV (serve anche conferma di seduta di qualità, assente oggi). Forma a 7.6, in leggera freschezza: nessun'azione richiesta, resto in attesa di dati completi domani."
 }
