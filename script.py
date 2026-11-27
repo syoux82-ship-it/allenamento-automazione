@@ -343,8 +343,20 @@ che non ci sono avvisi.
 # 5. Scrittura del risultato
 # ---------------------------------------------------------------------------
 
-def write_output(payload: dict) -> None:
+TEST_OUTPUT_PATH = DATA_DIR / "test-output.json"
+
+
+def write_output(payload: dict, *, test_mode: bool) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    if test_mode:
+        # Un test manuale su una data passata non deve mai sovrascrivere
+        # data/latest.json (che rappresenta "oggi") ne' sporcare lo storico:
+        # va in un file separato, cosi' si puo' verificare senza rischi.
+        TEST_OUTPUT_PATH.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        return
 
     LATEST_PATH.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -359,7 +371,20 @@ def write_output(payload: dict) -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> int:
-    target_date = date.today() - timedelta(days=1)  # i dati di "ieri"
+    test_date_raw = (os.environ.get("TARGET_DATE") or "").strip()
+    test_mode = bool(test_date_raw)
+
+    if test_mode:
+        try:
+            target_date = date.fromisoformat(test_date_raw)
+        except ValueError:
+            print(
+                f"TARGET_DATE non valida ('{test_date_raw}'), attesa YYYY-MM-DD",
+                file=sys.stderr,
+            )
+            return 1
+    else:
+        target_date = date.today() - timedelta(days=1)  # i dati di "ieri"
 
     try:
         garmin_data = fetch_garmin(target_date)
@@ -386,8 +411,9 @@ def main() -> int:
         "judgment": judgment,
     }
 
-    write_output(payload)
-    print(f"Aggiornato {LATEST_PATH} per il {target_date.isoformat()}")
+    write_output(payload, test_mode=test_mode)
+    out_path = TEST_OUTPUT_PATH if test_mode else LATEST_PATH
+    print(f"Aggiornato {out_path} per il {target_date.isoformat()}")
     return 0
 
 
