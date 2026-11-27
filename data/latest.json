@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-11-27T13:47:40.055195Z",
+  "metrics": {
+    "date": "2026-11-26",
+    "ctl": null,
+    "atl": null,
+    "form": null,
+    "eftp": null,
+    "resting_hr": null,
+    "hrv": null,
+    "sleep_hours": null
+  },
+  "judgment": "Non ci sono avvisi: i dati odierni non sono disponibili (CTL, ATL, Form, eFTP, HR a riposo, HRV e ore di sonno risultano nulli), quindi non è possibile effettuare alcuna valutazione."
+}
