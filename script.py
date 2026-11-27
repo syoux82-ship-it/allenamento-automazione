@@ -249,7 +249,10 @@ def compute_training_metrics(garmin_data: dict, intervals_history: list[dict]) -
     daily_stress = None
     stress_data = garmin_data.get("stress") or {}
     if isinstance(stress_data, dict):
-        daily_stress = stress_data.get("avgStressLevel") or stress_data.get("overallStressLevel")
+        for key in ("avgStressLevel", "overallStressLevel", "averageStressLevel", "avgStress"):
+            if stress_data.get(key) is not None:
+                daily_stress = stress_data.get(key)
+                break
 
     return {
         "date": None,  # impostato dal chiamante
@@ -323,10 +326,17 @@ che non ci sono avvisi.
 
     message = client.messages.create(
         model="claude-sonnet-5",
-        max_tokens=400,
+        max_tokens=600,
         messages=[{"role": "user", "content": prompt}],
     )
-    return message.content[0].text
+
+    # La risposta puo' contenere blocchi di tipo diverso (es. "thinking"
+    # prima del testo finale): prendiamo il primo blocco di tipo "text",
+    # non semplicemente il primo blocco in assoluto.
+    for block in message.content:
+        if getattr(block, "type", None) == "text":
+            return block.text
+    return "(giudizio non disponibile: nessun blocco di testo nella risposta dell'AI)"
 
 
 # ---------------------------------------------------------------------------
